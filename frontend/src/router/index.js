@@ -10,7 +10,7 @@ const routes = [
     },
 
     {
-        path: '/link',
+        path: '/link:id',
         name: 'Link',
         component: Link
     }

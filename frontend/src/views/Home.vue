@@ -12,6 +12,7 @@
                 :public_repos= "repos"
                 :login= "login"
                 :alt= "alt_img"
+                :id="user.id"
             />
         </div>
     </div>
