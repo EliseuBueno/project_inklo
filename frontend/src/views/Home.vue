@@ -2,17 +2,19 @@
     <div class="container">
         <h1 class="text-center">Lista de Usuários Github</h1>
         <hr><br>
-        <div class="row row-cols-2 row-cols-md-2 g-4">
+        <div class="row row-cols-2 row-cols-md-2 g-4"
+        v-for="(list, index) in listUsers"
+                v-bind:key="index"
+        >
             <card-component
-                v-for="user in users"
-                :key="user.id"
+                :retorno = "retorno"
                 :img= "avatar"
-                :user= "login"
+                :user= "name"
                 :registration_dt= "rg_dt"
                 :public_repos= "repos"
                 :login= "login"
                 :alt= "alt_img"
-                :id="user.id"
+                v-model="link"
             />
         </div>
     </div>
@@ -22,11 +24,15 @@
     import api from "../services/api.js"
     import {format} from "date-fns"
     import CardComponent from '../components/CardComponent.vue'
+    import { userStore } from '../store/user';
+
     export default {
         components: { CardComponent },
         name: ('Home'),
+        props: ['retorno'],
         data() {
             return {
+                valor: '',
                 alt_img: 'Avatar Image',
                 profiles: null,
                 avatar: null,
@@ -34,30 +40,17 @@
                 rg_dt: null,
                 repos: null,
                 login: null,
-                users: [
-                    {
-                        id: 1,
-                        log: 'wallysonn'
-                    },
-                    {
-                        id: 2,
-                        log: 'diego3g'
-                    },
-                    {
-                        id: 3,
-                        log: 'filipedeschamps'
-                    },
-                    {
-                        id: 4,
-                        log: 'rmanguinho'
-                    },
-                ]
+                listUsers: [],
+                link: ''
             }
         },
         methods: {
             async getProfiles() {
-                Array.from(this.users).forEach(use => 
-                    api.get(`/${use.log}`)
+                const store = userStore()
+                const listUsers = store.listUsers
+                this.listUsers = listUsers
+                Array.from(listUsers).forEach(use =>
+                    api.get(`/${use}`)
                         .then((res) => {
                             this.profiles = res.data
                             this.avatar = this.profiles.avatar_url
@@ -65,15 +58,24 @@
                             this.rg_dt = format(new Date(this.profiles.created_at), 'dd/MM/yyyy')
                             this.repos = this.profiles.public_repos
                             this.login = this.profiles.login
-                            console.log(use.log)
+                            this.valor = ''
+                            this.link = "https://api.github.com/users/" + this.login + "/repos"
+                            console.log(this.link)
                         })
                         .catch((error) => {
                             console.log(error);
                         })
                 )
+            },
+            async detailUser(login) {
+                const req = await fetch(`https://api.github.com/users/${login}`, {
+                    method: "GET"
+                });
+                const res = await req.json();                
+                this.getProfiles();
             }
         },
-        mounted() {
+        mounted () {
             this.getProfiles()
         }
     }
