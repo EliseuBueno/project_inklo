@@ -22,9 +22,6 @@
                     Link não registrado!!!
                 </p>
                 <hr>
-                <div>
-                    <a href="#" class="btn btn-primary">Salvar</a>
-                </div>
             </div>
             </div>
         </div>
