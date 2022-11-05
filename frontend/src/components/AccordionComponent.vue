@@ -1,12 +1,12 @@
 <template>
     <div class="accordion" id="accordion">
         <div class="accordion-item">
-            <h2 class="accordion-header" :id="idAcordion">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="databstarget" aria-expanded="true" aria-controls="collapseOne">
                     <strong>Título: {{name}}</strong>
                 </button>
             </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" :aria-labelledby="idAcordion" data-bs-parent="#accordion">
+            <div :id="databstargetId" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne" data-bs-parent="#accordion">
             <div class="accordion-body">
                 <p v-if="description">
                     <strong>Descrição: </strong>{{description}}
@@ -35,8 +35,8 @@
             'name',
             'description',
             'html_url',
-            'idAcordion',
-            'aria-labelledby'
+            'databstarget',
+            'databstargetId'
         ]
     }
 </script>
