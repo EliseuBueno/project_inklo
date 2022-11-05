@@ -19,8 +19,8 @@
                 :name = "repos.name"
                 :description="repos.description"
                 :html_url="repos.html_url"
-                :idAcordion="`idAcordion${index}`"
-                :aria-labelledby="`idAcordion${index}`"
+                :databstarget="`#target${index}`"
+                :databstargetId="`target${index}`"
             />
         </div>
     </div>
@@ -36,7 +36,6 @@
         data() {
             return {
                 repositories: [],
-                idAcordion: '',
                 login: '',
                 users: [],
                 sucesso: false,
