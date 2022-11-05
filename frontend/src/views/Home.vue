@@ -9,7 +9,7 @@
                 :img="profile.avatar_url"
                 :user= "profile.name"
                 :registration_dt= "profile.created_at"
-                :public_repos= "profile.repos"
+                :public_repos= "profile.public_repos"
                 :login= "profile.login"
                 :alt= "`Avatar_${profile.login}`"
             />
