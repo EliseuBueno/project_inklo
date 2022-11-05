@@ -1,6 +1,15 @@
 <template>
     <div class="container">
         <h1 class="text-center">Lista de Repositórios</h1>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="#" class="btn btn-primary" @click="enviarLogin">Salvar Repositórios</a>
+        </div><br>
+        <div class="alert alert-success" role="alert" v-show="sucesso" :max="dismissSecs">
+            Arquivo salvo com sucesso!!!
+        </div>
+        <div class="alert alert-danger" role="alert" v-show="erro" >
+            Erro ao gerar o arquivo!!!
+        </div>
         <hr>
         <div 
             v-for = "(repos, index) in repositories"
@@ -20,6 +29,7 @@
 
 <script>
     import api from "../services/api.js"
+    import api_save from "../services/api_save.js"
     import { repositoriesStore } from '../store/repositories';
     import AccordionComponent from '../components/AccordionComponent.vue'
     export default {
@@ -29,10 +39,36 @@
             return {
                 repositories: [],
                 idAcordion: '',
-                login: ''
+                login: '',
+                users: [],
+                sucesso: false,
+                erro: false,
             }
         },
         methods:{
+            async enviarLogin() {
+                let objPost = {
+                    'login': this.login
+                };
+                
+                api_save.post("/salvar-local", objPost)
+                .then((res) => {
+                    this.users = res.data
+                    this.sucesso = true
+                    this.erro = false
+                    setTimeout(() => {
+                        this.sucesso = false;
+                    }, 3000)
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        this.sucesso = false
+                        this.erro = true
+                        setTimeout(() => {
+                            this.erro = false;
+                        }, 3000)
+                    })
+            },
             async getRepos() {
                 const store = repositoriesStore()
                 const listRepositories = store.getRepositories()
