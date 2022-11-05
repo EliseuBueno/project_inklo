@@ -2,19 +2,16 @@
     <div class="container">
         <h1 class="text-center">Lista de Usuários Github</h1>
         <hr><br>
-        <div class="row row-cols-2 row-cols-md-2 g-4"
-        v-for="(list, index) in listUsers"
-                v-bind:key="index"
-        >
+        <div class="row row-cols-2 row-cols-md-2 g-4">
             <card-component
-                :retorno = "retorno"
-                :img= "avatar"
-                :user= "name"
-                :registration_dt= "rg_dt"
-                :public_repos= "repos"
-                :login= "login"
-                :alt= "alt_img"
-                v-model="link"
+                v-for="(profile, index) in profiles"
+                :key="index"
+                :img="profile.avatar_url"
+                :user= "profile.name"
+                :registration_dt= "profile.created_at"
+                :public_repos= "profile.repos"
+                :login= "profile.login"
+                :alt= "`Avatar_${profile.login}`"
             />
         </div>
     </div>
@@ -32,16 +29,8 @@
         props: ['retorno'],
         data() {
             return {
-                valor: '',
-                alt_img: 'Avatar Image',
-                profiles: null,
-                avatar: null,
-                name: null,
-                rg_dt: null,
-                repos: null,
-                login: null,
-                listUsers: [],
-                link: ''
+                profiles: [],
+                listUsers: []
             }
         },
         methods: {
@@ -52,14 +41,8 @@
                 Array.from(listUsers).forEach(use =>
                     api.get(`/${use}`)
                         .then((res) => {
-                            this.profiles = res.data
-                            this.avatar = this.profiles.avatar_url
-                            this.name = this.profiles.name
-                            this.rg_dt = format(new Date(this.profiles.created_at), 'dd/MM/yyyy')
-                            this.repos = this.profiles.public_repos
-                            this.login = this.profiles.login
-                            this.valor = ''
-                            this.link = "https://api.github.com/users/" + this.login + "/repos"
+                            const infoProfile = res.data
+                            this.profiles.push(infoProfile);
                         })
                         .catch((error) => {
                             console.log(error);
