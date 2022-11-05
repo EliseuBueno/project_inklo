@@ -42,6 +42,7 @@
                     api.get(`/${use}`)
                         .then((res) => {
                             const infoProfile = res.data
+                            infoProfile.created_at = format(new Date(infoProfile.created_at), 'dd/MM/yyyy')
                             this.profiles.push(infoProfile);
                         })
                         .catch((error) => {
