@@ -10,9 +10,6 @@
                     <li class="nav-item">
                         <router-link to="/" class="nav-link active" aria-current="page">Home</router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link to="/link" class="nav-link active" aria-current="page">Link</router-link>
-                    </li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

@@ -4,7 +4,7 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <a href="#" class="btn btn-primary" @click="enviarLogin">Salvar Repositórios</a>
         </div><br>
-        <div class="alert alert-success" role="alert" v-show="sucesso" :max="dismissSecs">
+        <div class="alert alert-success" role="alert" v-show="sucesso">
             Arquivo salvo com sucesso!!!
         </div>
         <div class="alert alert-danger" role="alert" v-show="erro" >
@@ -19,7 +19,6 @@
                 :name = "repos.name"
                 :description="repos.description"
                 :html_url="repos.html_url"
-                :created_at="created_at"
                 :idAcordion="`idAcordion${index}`"
                 :aria-labelledby="`idAcordion${index}`"
             />

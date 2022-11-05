@@ -60,7 +60,6 @@
                             this.login = this.profiles.login
                             this.valor = ''
                             this.link = "https://api.github.com/users/" + this.login + "/repos"
-                            console.log(this.link)
                         })
                         .catch((error) => {
                             console.log(error);
