@@ -30,7 +30,6 @@
 <script>
     import api from "../services/api.js"
     import api_save from "../services/api_save.js"
-    import { repositoriesStore } from '../store/repositories';
     import AccordionComponent from '../components/AccordionComponent.vue'
     export default {
         components: { AccordionComponent },
@@ -50,7 +49,6 @@
                 let objPost = {
                     'login': this.login
                 };
-                
                 api_save.post("/salvar-local", objPost)
                 .then((res) => {
                     this.users = res.data
@@ -70,9 +68,6 @@
                     })
             },
             async getRepos() {
-                const store = repositoriesStore()
-                const listRepositories = store.getRepositories()
-                
                 this.login = this.$route.params.login
                     api.get('/'+ this.login + '/repos')
                         .then((res) => {
