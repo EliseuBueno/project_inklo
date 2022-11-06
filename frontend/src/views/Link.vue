@@ -79,8 +79,6 @@
 
             return {
                 repositories,
-                users,
-                login,
                 sucesso,
                 erro,
                 enviarLogin,
