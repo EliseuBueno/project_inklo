@@ -29,52 +29,63 @@
 <script>
     import api from "../services/api.js"
     import api_save from "../services/api_save.js"
+    import { ref } from 'vue'
+    import { useRoute } from 'vue-router'
     import AccordionComponent from '../components/AccordionComponent.vue'
     export default {
         components: { AccordionComponent },
         name: ('Link'),
-        data() {
-            return {
-                repositories: [],
-                login: '',
-                users: [],
-                sucesso: false,
-                erro: false,
-            }
-        },
-        methods:{
-            async enviarLogin() {
+        setup() {
+            const repositories = ref([])
+            const users = ref([])
+            const login = ref('')
+            const sucesso = ref(false)
+            const erro = ref(false)
+            const route = useRoute()
+
+            const enviarLogin = () => {
                 let objPost = {
-                    'login': this.login
+                    'login': login.value
                 };
                 api_save.post("/salvar-local", objPost)
                 .then((res) => {
-                    this.users = res.data
-                    this.sucesso = true
-                    this.erro = false
+                    users.value = res.data
+                    sucesso.value = true
+                    erro.value = false
                     setTimeout(() => {
-                        this.sucesso = false;
+                        sucesso.value = false;
                     }, 3000)
                     })
                     .catch((error) => {
                         console.log(error);
-                        this.sucesso = false
-                        this.erro = true
+                        sucesso.value = false
+                        erro.value = true
                         setTimeout(() => {
-                            this.erro = false;
+                            erro.value = false;
                         }, 3000)
                     })
-            },
-            async getRepos() {
-                this.login = this.$route.params.login
-                    api.get('/'+ this.login + '/repos')
+            }
+
+            const getRepos = () => {
+                login.value = route.params.login
+                    api.get('/'+ login.value + '/repos')
                         .then((res) => {
-                            this.repositories = res.data
+                            repositories.value = res.data
                         })
                         .catch((error) => {
                             console.log(error);
                         })
-            },
+            }
+
+            return {
+                repositories,
+                users,
+                login,
+                sucesso,
+                erro,
+                enviarLogin,
+                getRepos
+            }
         },
         mounted () {
             this.getRepos()

@@ -56,8 +56,7 @@
 
             return {
                 profiles,
-                getProfiles,
-                detailUser
+                getProfiles
             }
         },
         mounted (){
