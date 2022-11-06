@@ -22,43 +22,45 @@
     import {format} from "date-fns"
     import CardComponent from '../components/CardComponent.vue'
     import { userStore } from '../store/user';
+    import { ref } from "vue";
 
     export default {
         components: { CardComponent },
         name: ('Home'),
-        props: ['retorno'],
-        data() {
-            return {
-                profiles: [],
-                listUsers: []
-            }
-        },
-        methods: {
-            async getProfiles() {
+        setup() {
+
+            const profiles = ref([])
+
+            const getProfiles = () => {
                 const store = userStore()
                 const listUsers = store.listUsers
-                this.listUsers = listUsers
                 Array.from(listUsers).forEach(use =>
                     api.get(`/${use}`)
                         .then((res) => {
                             const infoProfile = res.data
                             infoProfile.created_at = format(new Date(infoProfile.created_at), 'dd/MM/yyyy')
-                            this.profiles.push(infoProfile);
+                            profiles.value.push(infoProfile);
                         })
                         .catch((error) => {
                             console.log(error);
                         })
                 )
-            },
-            async detailUser(login) {
-                const req = await fetch(`https://api.github.com/users/${login}`, {
+            }
+
+            const detailUser = (login) => {
+                fetch(`https://api.github.com/users/${login}`, {
                     method: "GET"
-                });
-                const res = await req.json();                
+                });                
                 this.getProfiles();
             }
+
+            return {
+                profiles,
+                getProfiles,
+                detailUser
+            }
         },
-        mounted () {
+        mounted (){
             this.getProfiles()
         }
     }
