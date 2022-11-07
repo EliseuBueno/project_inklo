@@ -29,7 +29,7 @@
 <script>
     import api from "../services/api.js"
     import api_save from "../services/api_save.js"
-    import { ref } from 'vue'
+    import { ref, onMounted } from 'vue'
     import { useRoute } from 'vue-router'
     import AccordionComponent from '../components/AccordionComponent.vue'
     export default {
@@ -66,7 +66,7 @@
                     })
             }
 
-            const getRepos = () => {
+            const getRepos = onMounted(() => {
                 login.value = route.params.login
                     api.get('/'+ login.value + '/repos')
                         .then((res) => {
@@ -75,18 +75,14 @@
                         .catch((error) => {
                             console.log(error);
                         })
-            }
+            })
 
             return {
                 repositories,
                 sucesso,
                 erro,
-                enviarLogin,
-                getRepos
+                enviarLogin
             }
-        },
-        mounted () {
-            this.getRepos()
         }
     }
 </script>
